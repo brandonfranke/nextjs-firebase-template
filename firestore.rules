@@ -1,0 +1,52 @@
+rules_version = "2";
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow write: if false;
+      allow read: if false;
+    }
+    match /{document=**} {
+      match /users/{userId} {
+        //alowing creation of user document only if the to-be-created document id is the same as the user id
+        allow create: if request.auth.uid == request.resource.id; 
+        //allowing read only if the user id matches the document id
+        allow read: if request.auth.uid == userId; 
+        //allowing write only if the user id matches the document id and no metadata changes are made
+        allow write: if request.auth.uid == userId && noMetadataChanges(request, resource); 
+      }
+    }
+  }
+}
+
+function signedIn(request){
+  return request.auth != null;
+}
+
+//Checks if the incoming document id is the userid of the record or it matches the userId of the document
+function isMyDocument(request, resource){
+  return (request.method == 'create' && request.auth.uid == request.resource.data.userId) || 
+  (request.method == 'write' && request.auth.uid == resource.data.userId);
+}
+
+//checks if all the fields are present
+function hasAll(request, resource, fields){
+  return (request.method == 'create' && request.resource.data.keys().hasAll(fields)) || 
+  (request.method == 'write' && request.resource.data.diff(resource.data).affectedKeys().hasAll(fields));
+}
+
+//checks if any of the fields are present in the request
+function hasAny(request, resource, fields){
+  return (request.method == 'create' && request.resource.data.keys().hasAny(fields)) || 
+  (request.method == 'write' && request.resource.data.diff(resource.data).affectedKeys().hasAny(fields));
+}
+
+//checks if only the provided fields are in the request
+function hasOnly(request, resource, fields) {
+  return (request.method == 'create' && request.resource.data.keys().hasOnly(fields)) || 
+  (request.method == 'write' && request.resource.data.diff(resource.data).affectedKeys().hasOnly(fields));
+}
+
+function noMetadataChanges(request, resource){
+  return !(request.resource.data.diff(resource.data).affectedKeys().hasAny(['createdOn']));
+}
