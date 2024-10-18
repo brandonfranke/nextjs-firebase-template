@@ -36,7 +36,16 @@ export function ChangeEmailForm({ initialUser }: { initialUser: User }) {
   });
 
   const { mutateAsync: changeEmail } = useAuthUpdateEmail();
-  const { mutate: sendEmailVerification } = useAuthSendEmailVerification();
+  const { mutate: sendEmailVerification, isPending: isSendingEmail } =
+    useAuthSendEmailVerification({
+      onSuccess: () => {
+        toast({
+          title: "Verification email sent",
+          description:
+            "Please verify your email using the link sent to your email",
+        });
+      },
+    });
 
   const getFirebaseError = useFirebaseError();
 
@@ -89,15 +98,28 @@ export function ChangeEmailForm({ initialUser }: { initialUser: User }) {
             </FormItem>
           )}
         />
-        <Button
-          type="submit"
-          disabled={!form.formState.isDirty || form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting && (
-            <LoaderCircle className="animate-spin mr-2" />
+        <div className="space-x-2">
+          <Button
+            type="submit"
+            disabled={!form.formState.isDirty || form.formState.isSubmitting}
+          >
+            {form.formState.isSubmitting && (
+              <LoaderCircle className="animate-spin mr-2" />
+            )}
+            Update email
+          </Button>
+          {!user.emailVerified && (
+            <Button
+              type="submit"
+              variant={"secondary"}
+              disabled={isSendingEmail}
+              onClick={() => sendEmailVerification({ user })}
+            >
+              {isSendingEmail && <LoaderCircle className="animate-spin mr-2" />}
+              Resend Verification Email
+            </Button>
           )}
-          Update email
-        </Button>
+        </div>
       </form>
     </Form>
   );

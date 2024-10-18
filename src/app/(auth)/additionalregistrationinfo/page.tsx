@@ -1,20 +1,14 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { LoaderCircle, Terminal } from "lucide-react";
-import { useAdditionalRegistrationInfoViewModel } from "@/app/(auth)/additionalregistrationinfo/useAdditionalRegistrationInfo";
+import AdditionalRegistrationInfoForm from "@/app/(auth)/additionalregistrationinfo/addition-info-form";
+import { getUserServerSession } from "@/lib/firebase/server-app";
+import { User } from "firebase/auth";
+import { Metadata } from "next";
 
-export default function AdditionalRegistrationInfo() {
-  const { form, handleSubmit } = useAdditionalRegistrationInfoViewModel();
+export const metadata: Metadata = {
+  title: "Additional Info",
+};
+
+export default async function AdditionalRegistrationInfo() {
+  const { user } = await getUserServerSession();
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
@@ -26,52 +20,9 @@ export default function AdditionalRegistrationInfo() {
               Additional Information
             </h2>
           </div>
-          {form.formState.errors.root && (
-            <Alert variant={"destructive"}>
-              <Terminal className="h-4 w-4" />
-              <AlertTitle>Something</AlertTitle>
-              <AlertDescription>
-                {form.formState.errors.root.message}
-              </AlertDescription>
-            </Alert>
-          )}
-          <Form {...form}>
-            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-              <div className="space-y-4 rounded-md shadow-sm">
-                <div>
-                  <FormField
-                    control={form.control}
-                    name="username"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Username"
-                            type="text"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-              <div>
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={form.formState.isSubmitting}
-                >
-                  {form.formState.isSubmitting && (
-                    <LoaderCircle className="animate-spin mr-2" />
-                  )}
-                  Complete Registration
-                </Button>
-              </div>
-            </form>
-          </Form>
+          <AdditionalRegistrationInfoForm
+            initialUser={user?.toJSON() as User}
+          />
         </div>
       </div>
 

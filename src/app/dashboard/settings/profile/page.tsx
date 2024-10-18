@@ -1,6 +1,12 @@
 import { Separator } from "@/components/ui/separator";
 import AccountForm from "@/app/dashboard/settings/profile/profile-form";
 import { getUserServerSession } from "@/lib/firebase/server-app";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Profile",
+  description: "Change your notification settings",
+};
 
 export default async function ProfileSettings() {
   const { user, userRecord } = await getUserServerSession(true);

@@ -10,6 +10,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import NavBar from "@/app/navbar";
 import { getUserServerSession } from "@/lib/firebase/server-app";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 //Homepage and entry point of app
 export default async function Home() {

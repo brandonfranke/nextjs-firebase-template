@@ -4,6 +4,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
 import { getUserServerSession } from "@/lib/firebase/server-app";
 import { User } from "firebase/auth";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Security",
+  description: "Change your notification settings",
+};
 
 export default async function SecuritySettings() {
   const { user } = await getUserServerSession();
