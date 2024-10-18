@@ -45,5 +45,8 @@ function isAuthRoute(pathname: string) {
 }
 
 function isProtectedRoute(pathname: string) {
-  return pathname.startsWith("/dashboard/settings");
+  return (
+    pathname.startsWith("/dashboard/settings") ||
+    pathname.startsWith("/additionalregistrationinfo")
+  );
 }

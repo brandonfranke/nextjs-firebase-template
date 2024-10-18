@@ -2,6 +2,7 @@ import AdditionalRegistrationInfoForm from "@/app/(auth)/additionalregistrationi
 import { getUserServerSession } from "@/lib/firebase/server-app";
 import { User } from "firebase/auth";
 import { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Additional Info",
@@ -9,6 +10,14 @@ export const metadata: Metadata = {
 
 export default async function AdditionalRegistrationInfo() {
   const { user } = await getUserServerSession();
+
+  if (!user) {
+    return null;
+  }
+
+  if (user.metadata.creationTime !== user.metadata.lastSignInTime) {
+    redirect("/");
+  }
 
   return (
     <div className="flex flex-col md:flex-row h-screen">

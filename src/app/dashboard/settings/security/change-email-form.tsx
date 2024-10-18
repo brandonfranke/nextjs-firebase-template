@@ -98,7 +98,7 @@ export function ChangeEmailForm({ initialUser }: { initialUser: User }) {
             </FormItem>
           )}
         />
-        <div className="space-x-2">
+        <div className="space-y-2 md:space-x-2">
           <Button
             type="submit"
             disabled={!form.formState.isDirty || form.formState.isSubmitting}
@@ -110,7 +110,7 @@ export function ChangeEmailForm({ initialUser }: { initialUser: User }) {
           </Button>
           {!user.emailVerified && (
             <Button
-              type="submit"
+              type="button"
               variant={"secondary"}
               disabled={isSendingEmail}
               onClick={() => sendEmailVerification({ user })}
