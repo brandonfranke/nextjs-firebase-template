@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
 import NavBar from "@/app/navbar";
-import { getUserServerSession } from "@/lib/firebase/server-app";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,8 +16,7 @@ export const metadata: Metadata = {
 };
 
 //Homepage and entry point of app
-export default async function Home() {
-  const { user } = await getUserServerSession();
+export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Navbar */}
@@ -35,9 +33,6 @@ export default async function Home() {
             <p className="mt-3 max-w-md mx-auto text-base sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
               Streamline your business processes, boost productivity, and drive
               growth with our cutting-edge SaaS platform.
-            </p>
-            <p className="mt-3 max-w-md mx-auto text-base sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-              Hi There {user?.displayName}
             </p>
             <div className="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center">
               <div className="space-y-4 sm:space-y-0 sm:mx-auto sm:inline-grid sm:grid-cols-3 sm:gap-5">

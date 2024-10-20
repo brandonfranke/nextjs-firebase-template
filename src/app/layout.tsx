@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Providers from "@/app/providers";
-import { cookies } from "next/headers";
 import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: {
@@ -19,17 +19,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookie = cookies();
-
   return (
-    <html
-      lang="en"
-      data-theme-mode={cookie.get("theme-mode")?.value ?? "dark"}
-      data-theme-color={cookie.get("theme-color")?.value ?? "default"}
-    >
+    <html lang="en">
       <body
         className={`antialiased bg-background text-foreground dark ${inter.className}`}
       >
+        <Toaster />
         <Providers>{children}</Providers>
       </body>
     </html>

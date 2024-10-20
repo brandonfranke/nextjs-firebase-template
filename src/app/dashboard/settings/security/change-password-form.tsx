@@ -12,8 +12,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useAuthUpdatePassword } from "@/hooks/firebase/auth";
 import { toast } from "@/hooks/use-toast";
-import { useFirebaseError } from "@/hooks/utils";
 import { useUserClientSession } from "@/lib/firebase/client-app";
+import { getFirebaseErrorMessage } from "@/lib/utils";
 import { resetPasswordFormSchema } from "@/types/schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { User } from "firebase/auth";
@@ -33,8 +33,6 @@ export default function ChangePasswordForm({
   });
 
   const { mutateAsync: changePassword } = useAuthUpdatePassword();
-
-  const getFirebaseError = useFirebaseError();
 
   // We do account auth actions like changing email, updating password etc, using client side SDK
   // instead of Server Actions so we can take advantage of firebase app check security features
@@ -57,7 +55,7 @@ export default function ChangePasswordForm({
         description: "There was a problem changing your password",
         variant: "destructive",
       });
-      form.setError("root", { message: getFirebaseError(error) });
+      form.setError("root", { message: getFirebaseErrorMessage(error) });
     }
   };
   return (

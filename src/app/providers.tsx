@@ -4,7 +4,8 @@ import { firebaseConfig } from "@/lib/firebase/config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "next-themes";
+import { THEMES } from "@/constants";
 
 const queryClient = new QueryClient();
 export default function Providers({
@@ -24,11 +25,10 @@ export default function Providers({
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        {children}
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ThemeProvider themes={THEMES}>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>{children}</TooltipProvider>
+      </QueryClientProvider>
+    </ThemeProvider>
   );
 }

@@ -6,9 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { THEME_COLORS, THEME_MODES } from "@/constants/index";
-import { useTheme } from "@/hooks/utils";
-import { cn } from "@/lib/utils";
+import { THEMES } from "@/constants/index";
 import {
   Drawer,
   DrawerContent,
@@ -18,10 +16,12 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { useResponsive } from "ahooks";
-import { Paintbrush } from "lucide-react";
+import { Circle, Paintbrush } from "lucide-react";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 export default function ThemeSelector() {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
   const isDesktop = useResponsive()?.lg ?? true;
 
   if (isDesktop) {
@@ -36,40 +36,26 @@ export default function ThemeSelector() {
           <div className="space-y-2">
             <div className="flex flex-col gap-1">
               <h1 className="font-bold text-sm">Customize Theme</h1>
-              <h1 className="font-semibold text-sm">Color</h1>
             </div>
-            <div className="flex gap-3">
-              {THEME_COLORS.map((color) => (
+            <div className="flex gap-3"></div>
+            <div className="flex flex-col gap-3">
+              {THEMES.map((t) => (
                 <Button
-                  key={color.value}
+                  key={t}
                   variant={"outline"}
                   size={"sm"}
-                  className={cn({
-                    "bg-accent":
-                      color.value == theme?.color ||
-                      (theme?.color === undefined && color.value === "default"),
-                  })}
-                  onClick={() => setTheme({ color: color.value })}
+                  className="capitalize justify-between"
+                  onClick={() => setTheme(t)}
                 >
-                  {color.text}
-                </Button>
-              ))}
-            </div>
-            <h1 className="font-semibold text-sm">Mode</h1>
-            <div className="flex gap-3">
-              {THEME_MODES.map((mode) => (
-                <Button
-                  key={mode.value}
-                  variant={"outline"}
-                  size={"sm"}
-                  className={cn({
-                    "bg-accent":
-                      mode.value == theme?.mode ||
-                      (theme?.color === undefined && mode.value === "light"),
-                  })}
-                  onClick={() => setTheme({ mode: mode.value })}
-                >
-                  {mode.text}
+                  {t}
+                  <Circle
+                    fill={cn({
+                      "hsl(240 5.9% 10%)": t === "light",
+                      "hsl(0 0% 98%)": t === "dark",
+                      "hsl(0 72.2% 50.6%)": t === "red",
+                      "hsl(217.2 91.2% 59.8%)": t === "blue",
+                    })}
+                  />
                 </Button>
               ))}
             </div>
@@ -92,40 +78,27 @@ export default function ThemeSelector() {
         </DrawerHeader>
         <div className="space-y-2 p-6">
           <div className="flex flex-col gap-1">
-            <h1 className="font-semibold text-sm">Color</h1>
+            <h1 className="font-bold text-sm">Customize Theme</h1>
           </div>
-          <div className="flex gap-3">
-            {THEME_COLORS.map((color) => (
+          <div className="flex gap-3"></div>
+          <div className="flex flex-col gap-3">
+            {THEMES.map((t) => (
               <Button
-                key={color.value}
+                key={t}
                 variant={"outline"}
                 size={"sm"}
-                className={cn({
-                  "bg-accent":
-                    color.value == theme?.color ||
-                    (theme?.color === undefined && color.value === "default"),
-                })}
-                onClick={() => setTheme({ color: color.value })}
+                className="capitalize justify-between"
+                onClick={() => setTheme(t)}
               >
-                {color.text}
-              </Button>
-            ))}
-          </div>
-          <h1 className="font-semibold text-sm">Mode</h1>
-          <div className="flex gap-3">
-            {THEME_MODES.map((mode) => (
-              <Button
-                key={mode.value}
-                variant={"outline"}
-                size={"sm"}
-                className={cn({
-                  "bg-accent":
-                    mode.value == theme?.mode ||
-                    (theme?.color === undefined && mode.value === "light"),
-                })}
-                onClick={() => setTheme({ mode: mode.value })}
-              >
-                {mode.text}
+                {t}
+                <Circle
+                  fill={cn({
+                    "hsl(240 5.9% 10%)": t === "light",
+                    "hsl(0 0% 98%)": t === "dark",
+                    "hsl(0 72.2% 50.6%)": t === "red",
+                    "hsl(217.2 91.2% 59.8%)": t === "blue",
+                  })}
+                />
               </Button>
             ))}
           </div>

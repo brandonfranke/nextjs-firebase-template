@@ -9,6 +9,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getFirebaseErrorMessage(error: unknown): string {
   return error instanceof FirebaseError
-    ? FIREBASE_ERRORS[error.code]
+    ? (FIREBASE_ERRORS[error.code] ?? FIREBASE_ERRORS["default"])
     : FIREBASE_ERRORS["default"];
 }
