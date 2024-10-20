@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Providers from "@/app/providers";
 import { Inter } from "next/font/google";
@@ -10,6 +10,13 @@ export const metadata: Metadata = {
     template: "%s | Next.js Firebase Starter",
   },
   description: "Next.js starter with Firebase, Tailwind CSS, and React Query",
+};
+
+export const viewport: Viewport = {
+  initialScale: 1,
+  width: "device-width",
+  maximumScale: 1,
+  viewportFit: "cover",
 };
 
 const inter = Inter({ subsets: ["latin"] });

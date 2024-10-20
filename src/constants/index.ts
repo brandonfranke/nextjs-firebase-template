@@ -9,4 +9,4 @@ export const FIREBASE_ERRORS: { [key: string]: string } & { default: string } =
       "That email and password combo in incorrect. Please try again.",
   };
 
-export const THEMES = ["dark", "light", "red", "blue"];
+export const THEMES = ["light", "dark", "red", "blue"];
